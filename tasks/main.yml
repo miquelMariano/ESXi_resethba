@@ -1,0 +1,17 @@
+---
+# tasks file for ESXi_resethba
+# https://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=2058675
+
+- name: Resetting fabric login with loop control of 30s
+#  command: echo {{ item }}
+  command: esxcli storage san fc reset -A {{ item }}
+  with_items:
+      - "{{ fabric1 }}" #Declared on inventory
+      - "{{ fabric2 }}" #Declared on inventory
+  loop_control:
+    pause: 30 
+
+- name: Rescan all HBA
+  command: esxcfg-rescan -A
+
+
